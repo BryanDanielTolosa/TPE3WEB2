@@ -1,6 +1,7 @@
 <?php
 
-require_once 'ApiView.php';
+require_once '/apiview/apiView.php';
+require_once '/apimodel/perro.model.php';
 
 class PerroController {
     private $model;

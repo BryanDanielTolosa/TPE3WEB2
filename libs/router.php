@@ -1,130 +1,90 @@
 <?php
-require_once './app/controller/criadero.controller.php';
-require_once './app/controller/perro.controller.php';
-require_once './app/controller/auth.controller.php';
 
-define('BASE_URL', '//'.$_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] 
-    . dirname($_SERVER['PHP_SELF']).'/');
+require_once './libs/request.php';
+require_once './libs/response.php';
 
+class Route {
+    private $url;
+    private $verb;
+    private $controller;
+    private $method;
+    private $params;
 
-if (!empty($_GET['action'])) {
-    $action = $_GET['action'];
-} else {
-    $action = '';
+    public function __construct($url, $verb, $controller, $method){
+        $this->url = $url;
+        $this->verb = $verb;
+        $this->controller = $controller;
+        $this->method = $method;
+        $this->params = [];
+    }
+    public function match($url, $verb) {
+        if($this->verb != $verb){
+            return false;
+        }
+        $partsURL = explode("/", trim($url,'/'));
+        $partsRoute = explode("/", trim($this->url,'/'));
+        if(count($partsRoute) != count($partsURL)){
+            return false;
+        }
+        foreach ($partsRoute as $key => $part) {
+            if($part[0] != ":"){
+                if($part != $partsURL[$key])
+                return false;
+            } //es un parametro
+            else
+            $this->params[''.substr($part,1)] = $partsURL[$key];
+        }
+        return true;
+    }
+    public function run($request, $response){
+        $controller = $this->controller;  
+        $method = $this->method;
+        $request->params = (object) $this->params;
+       
+        (new $controller())->$method($request, $response);
+    }
 }
 
-// Parsea la accion Ej: dev/juan --> ['dev', juan]
-$params = explode('/', $action);
+class Router {
+    private $routeTable = [];
+    private $middlewares = [];
+    private $defaultRoute;
+    private $request;
+    private $response;
 
-// Instancio los controller que existen por ahora
+    public function __construct() {
+        $this->defaultRoute = null;
+        $this->request = new Request();
+        $this->response = new Response();
+    }
 
-
-
-// Tabla de ruteo, determina que camino seguir segun la accion
-
-switch ($params[0]) {
-    //Modo publico
-    case '':
-        $CriaderoController = new CriaderoController();
-        $CriaderoController->showHome();
-        break;
-    case 'detalle':
-        $PerroController = new PerroController();
-        $PerroController->GetPerro($params[1]);
-        break;
-    case 'listadoCategorias':
-        $CriaderoController = new CriaderoController();
-        // Verificar si $params[1] existe
-        if (isset($params[1]) && !empty($params[1])) {
-            // Si hay un ID en $params[1], listar la categoría por ID
-            $CriaderoController->listarCategoriasById($params[1]);
-        } else {
-            // Si no hay ID, listar todas las categorías
-            $CriaderoController->listarCategorias();
+    public function route($url, $verb) {
+        foreach ($this->middlewares as $middleware) {
+            $middleware->run($this->request, $this->response);
         }
-        break;
-    case 'listadoItemsPorCategoria':
-        $CriaderoController = new CriaderoController();
-        $CriaderoController->listarItemsPorCategoria($params[1]);
-        break;
+        //$ruta->url //no compila!
+        foreach ($this->routeTable as $route) {
+            if($route->match($url, $verb)){
+                //TODO: ejecutar el controller//ejecutar el controller
+                // pasarle los parametros
+                $route->run($this->request, $this->response);
+                return;
+            }
+        }
+        //Si ninguna ruta coincide con el pedido y se configuró ruta por defecto.
+        if ($this->defaultRoute != null)
+            $this->defaultRoute->run($this->request, $this->response);
+    }
 
-    //Modo privado
-    case 'showLogin':
-        $Authcontroller = new AuthController();
-        $Authcontroller->showLogin();
-        break;
-    case 'login':
-        $AuthController = new AuthController();
-        $AuthController->login();
-        break;
-
-    //Admin Items
+    public function addMiddleware($middleware) {
+        $this->middlewares[] = $middleware;
+    }
     
-        case 'agregarForm':
-                        $PerroController = new PerroController();
-                        $PerroController->agregarForm();
-                        
-                        break;
-        case 'agregarPerro':
-            $PerroController = new PerroController();
-            $PerroController->agregarPerro();
-            break;
-        case 'EliminarPerro':
-            $PerroController = new PerroController();
-            $PerroController->eliminarPerro($params[1]);
-                        break;
+    public function addRoute ($url, $verb, $controller, $method) {
+        $this->routeTable[] = new Route($url, $verb, $controller, $method);
+    }
 
-        case 'editarForm':
-            $PerroController = new PerroController();
-            $PerroController->editarForm($params[1]);
-                        break;
-        case 'editarPerro':
-            $PerroController = new PerroController();
-                        
-                        $PerroController->editarPerro($params[1]);
-                        break;
-            
-    
-    //Admin Categorias
-    
-    case 'AgregarCategoria':
-        $CriaderoController = new CriaderoController();
-        $CriaderoController->mostrarFormularioAgregar();
-        break;
- 
-    case 'AgregarCriadero':
-        $CriaderoController = new CriaderoController();
-        $CriaderoController->agregarCriadero();
-        
-        
-        break;
-    case 'EditarCategoria':
-        $CriaderoController = new CriaderoController();
-        $CriaderoController->listarCategoriasEditar();
-        break;
-    case 'FormularioEditarCategoria':
-        $CriaderoController = new CriaderoController();
-        $CriaderoController->formEditarCriadero($params[1]);
-        break;
-    case 'EditarCriadero':
-        $CriaderoController = new CriaderoController();
-        $CriaderoController->editarCriadero($params[1]);
-        break;
-    case 'EliminarCategoria':
-        $CriaderoController = new CriaderoController();
-        $CriaderoController->listarCategoriasEliminar();
-        break;
-    case 'EliminarCriadero':
-        $CriaderoController = new CriaderoController();
-        $CriaderoController->eliminarCriadero($params[1]);
-        break;
-    case 'logout':
-        $AuthController = new AuthController();
-        $AuthController->logout();
-        break;
-
-    default:
-        header('HTTP/1.0 404 Not Found');
-        echo ('404 Page not found');
-        break;
+    public function setDefaultRoute($controller, $method) {
+        $this->defaultRoute = new Route("", "", $controller, $method);
+    }
 }

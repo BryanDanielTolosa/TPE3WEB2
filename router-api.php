@@ -1,16 +1,23 @@
 <?php
 require_once 'libs/router.php';
-
+require_once 'app/controllers/perro.controller.php';
+require_once 'app/controllers/criadero.controller.php';
+require_once 'app/controllers/user.api.controller.php';
+require_once 'app/middlewares/jwt.auth.middleware.php';
 // crea el router
 $router = new Router();
+$router->addMiddleware(new JWTAuthMiddleware());
 
 // define la tabla de ruteo
+    #              endpoint ,  verbo ,     controller  ,       metodo
+
 $router->addRoute('criadero', 'GET', 'TaskApiController', 'obtenerTareas');
 $router->addRoute('criadero', 'POST', 'TaskApiController', 'crearTarea');
 $router->addRoute('criadero/:ID', 'GET', 'criaderoController', 'obtenerTarea');
+$router->addRoute('usuarios/token', 'GET', 'UserApiController',   'getToken');
 
 // rutea
-$router->route($_GET["resource"], $_SERVER['REQUEST_METHOD']);
+$router->route($_GET['resource'], $_SERVER['REQUEST_METHOD']);
 ?>
 
 //Las rutas se definen usando el método: 
