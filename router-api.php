@@ -1,9 +1,9 @@
 <?php
 require_once 'libs/router.php';
-require_once 'app/controllers/perro.controller.php';
-require_once 'app/controllers/criadero.controller.php';
-require_once 'app/controllers/user.api.controller.php';
-require_once 'app/middlewares/jwt.auth.middleware.php';
+require_once './api/controller/perro.controller.php';
+require_once './api/controller/criadero.controller.php';
+require_once './api/controller/user.api.controller.php';
+require_once './api/middlewares/jwt.auth.middleware.php';
 // crea el router
 $router = new Router();
 $router->addMiddleware(new JWTAuthMiddleware());
