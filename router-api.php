@@ -14,8 +14,14 @@ $router->addMiddleware(new JWTAuthMiddleware());
 $router->addRoute('criadero', 'GET', 'TaskApiController', 'obtenerTareas');
 $router->addRoute('criadero', 'POST', 'TaskApiController', 'crearTarea');
 $router->addRoute('criadero/:ID', 'GET', 'criaderoController', 'obtenerTarea');
+
 $router->addRoute('usuarios/token', 'GET', 'UserApiController',   'getToken');
 
+$router->addRoute('perro', 'GET', 'PerroController', 'getAll');
+$router->addRoute('perro', 'POST', 'PerroController', 'add');
+$router->addRoute('perro/:ID', 'GET', 'PerroController', 'getById');
+$router->addRoute('perro/:ID', 'PUT', 'PerroController', 'update');
+$router->addRoute('perro/ID', 'DELETE', 'PerroController', 'delete');
 // rutea
 $router->route($_GET['resource'], $_SERVER['REQUEST_METHOD']);
 ?>

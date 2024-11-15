@@ -2,16 +2,21 @@
 
 require_once '/apiview/apiView.php';
 require_once '/apimodel/perro.model.php';
-
+require_once './libs/request.php';
 class PerroController {
     private $model;
     private $view;
-
+    private $data;
+    
     public function __construct() {
         $this->model = new PerroModel();
         $this->view = new ApiView();
+        $this->data = file_get_contents("php://input");
     }
 
+    function getData(){
+        return json_decode($this->data);
+    }
     /**
      * GET /perros - Lista todos los perros con opción de ordenar por un campo.
      * @param string $orderBy Campo para ordenar (por defecto 'nombre').
@@ -43,7 +48,7 @@ class PerroController {
      * POST /perros - Agrega un nuevo perro.
      */
     public function add() {
-        $data = json_decode(file_get_contents("php://input"), true);
+        $data = $this->getData();
         if (isset($data['nombre']) && isset($data['raza'])) {
             $newId = $this->model->addPerro($data);
             $this->view->response(["message" => "Perro creado con éxito", "id" => $newId], 201);
@@ -57,7 +62,7 @@ class PerroController {
      * @param int $id ID del perro.
      */
     public function update($id) {
-        $data = json_decode(file_get_contents("php://input"), true);
+        $data = $this->getData();
         if ($this->model->updatePerro($id, $data)) {
             $this->view->response(["message" => "Perro actualizado con éxito"], 200);
         } else {
