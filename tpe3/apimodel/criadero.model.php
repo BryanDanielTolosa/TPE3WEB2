@@ -80,5 +80,21 @@ class CriaderoModel{
 
         return $this->db->lastInsertId();
     }
+    function editarCriadero($req){        
+
+        $query = $this->db->prepare('UPDATE criadero 
+            SET Nombre = ?, Direccion = ?, Localidad = ?, Raza = ?, Imagen = ? WHERE id_criadero = ?');
+        
+        $result = $query->execute([
+            $req->body->Nombre,
+            $req->body->Direccion,
+            $req->body->Localidad,
+            $req->body->Raza,
+            $req->body->Imagen,
+            $req->params->id
+        ]);
+        return $result;
+
+    }
 }
 ?>

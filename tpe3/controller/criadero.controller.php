@@ -57,6 +57,14 @@ class CriaderoController {
         }
     }
 
+    function editarCriadero($req){
+        
+        if ($this->model->editarCriadero($req)) {
+            $this->view->response(["message" => "Criadero actualizado con éxito"], 200);
+        } else {
+            $this->view->response(["message" => "Datos inválidos o criadero no encontrado"], 400);
+        }
+    }
 }
 
 ?>
