@@ -94,6 +94,9 @@ class CriaderoModel{
             $req->params->id
         ]);
         return $result;
+
+    }
+
     function eliminarCriadero($req) {
         $id = $req->params->id;
 
