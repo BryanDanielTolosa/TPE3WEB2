@@ -35,8 +35,8 @@ class PerroController {
      * GET /perros/{id} - Obtiene un perro específico por ID.
      * @param int $id ID del perro.
      */
-    public function getById($id) {
-        $perro = $this->model->getPerroById($id);
+    public function getById($req) {
+        $perro = $this->model->getPerroById($req);
         if ($perro) {
             $this->view->response($perro, 200);
         } else {
@@ -49,7 +49,7 @@ class PerroController {
      */
     public function add() {
         $data = $this->getData();
-        if (isset($data['nombre']) && isset($data['raza'])) {
+       if (isset($data->nombre) && isset($data->sexo)) {
             $newId = $this->model->addPerro($data);
             $this->view->response(["message" => "Perro creado con éxito", "id" => $newId], 201);
         } else {
@@ -61,10 +61,25 @@ class PerroController {
      * PUT /perros/{id} - Actualiza un perro específico por ID.
      * @param int $id ID del perro.
      */
-    public function update($id) {
-        $data = $this->getData();
-        if ($this->model->updatePerro($id, $data)) {
+    public function update($req) {
+        $id = $req->params->id;
+        // verifico que exista el perro
+        $perro = $this->model->getPerroById($req);
+        if (!$perro) {
+            return $this->view->response("El perro con el id=$id no existe", 404);
+        }
+
+        if ($this->model->updatePerro($req)) {
             $this->view->response(["message" => "Perro actualizado con éxito"], 200);
+        } else {
+            $this->view->response(["message" => "Datos inválidos o perro no encontrado"], 400);
+        }
+    }
+
+    function delete($req){
+        
+        if ($this->model->delete($req)) {
+            $this->view->response(["message" => "Perro eliminado con éxito"], 200);
         } else {
             $this->view->response(["message" => "Datos inválidos o perro no encontrado"], 400);
         }

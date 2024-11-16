@@ -51,7 +51,8 @@ class PerroModel {
     }
 
     // Obtiene un perro específico por ID
-    public function getPerroById($id) {
+    public function getPerroById($req) {
+        $id = $req->params->id;
         $query = $this->db->prepare('SELECT * FROM perro WHERE id_perro = ?');
         $query->execute([$id]);
         return $query->fetch(PDO::FETCH_OBJ);
@@ -66,31 +67,32 @@ class PerroModel {
             $data->padre,
             $data->sexo,
             $data->madre,
-            $data->Imagen,
             $data->id_criadero_fk,
+            $data->Imagen            
         ]);
         return $this->db->lastInsertId();
     }
 
     // Actualiza un perro específico por ID
-    public function updatePerro($id, $data) {
+    public function updatePerro($req) {
         
         $query = $this->db->prepare("UPDATE perro SET nombre = ?, nacimiento = ?, padre = ?, sexo = ?, madre = ?, Imagen = ?, id_criadero_fk = ? WHERE id_perro = ?");
         $result = $query->execute([
-            $data->nombre,
-            $data->nacimiento,
-            $data->padre,
-            $data->sexo,
-            $data->madre,
-            $data->Imagen,
-            $data->id_criadero_fk,
-            $data->id_perro
+            $req->body->nombre,
+            $req->body->nacimiento,
+            $req->body->padre,
+            $req->body->sexo,
+            $req->body->madre,
+            $req->body->Imagen,
+            $req->body->id_criadero_fk,
+            $req->params->id
         ]);
         return $result;
     }
 
     // Elimina un perro por ID
-    public function deletePerro($id) {
+    public function delete($req) {
+        $id = $req->params->id;
         $query = $this->db->prepare('DELETE FROM perro WHERE id_perro = ?');
         return $query->execute([$id]);
     }
