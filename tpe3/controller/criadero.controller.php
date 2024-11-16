@@ -65,6 +65,24 @@ class CriaderoController {
             $this->view->response(["message" => "Datos inválidos o criadero no encontrado"], 400);
         }
     }
+    function eliminarCriadero($req){
+        $this->eliminarPerrosCriadero($req);
+        
+        if ($this->model->eliminarCriadero($req)) {
+            $this->view->response(["message" => "Criadero eliminado con éxito"], 200);
+        } else {
+            $this->view->response(["message" => "Datos inválidos o criadero no encontrado"], 400);
+        }
+    }
+
+    function eliminarPerrosCriadero($req){
+    
+        if ($this->model->eliminarPerrosCriadero($req)) {
+            $this->view->response(["message" => "Perros eliminados con éxito"], 200);
+        } else {
+            $this->view->response(["message" => "Datos inválidos o perros no encontrados"], 400);
+        }
+    }
 }
 
 ?>

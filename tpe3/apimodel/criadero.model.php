@@ -94,6 +94,19 @@ class CriaderoModel{
             $req->params->id
         ]);
         return $result;
+    function eliminarCriadero($req) {
+        $id = $req->params->id;
+
+        $query=$this->db->prepare('DELETE FROM criadero WHERE id_criadero = ? ');
+        $query->execute([$id]);
+            
+    }
+
+    function eliminarPerrosCriadero($req) {
+        $id = $req->params->id;
+        
+        $query=$this->db->prepare('DELETE FROM perro WHERE id_criadero_fk = ? ');
+        $query->execute([$id]);
 
     }
 }
