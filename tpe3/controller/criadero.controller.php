@@ -59,12 +59,19 @@ class CriaderoController {
 
     function editarCriadero($req){
         
+        $id = $req->params->id;
+        // verifico que exista el criadero
+        $criadero = $this->model->listarCategoriasById($req);
+        if (!$criadero) {
+            return $this->view->response("El criadero con el id=$id no existe", 404);
+        }
         if ($this->model->editarCriadero($req)) {
             $this->view->response(["message" => "Criadero actualizado con éxito"], 200);
         } else {
             $this->view->response(["message" => "Datos inválidos o criadero no encontrado"], 400);
         }
     }
+    
     function eliminarCriadero($req){
         $this->eliminarPerrosCriadero($req);
         
