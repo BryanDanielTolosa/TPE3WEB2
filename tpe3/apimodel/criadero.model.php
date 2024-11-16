@@ -39,5 +39,32 @@ class CriaderoModel{
             $this->db->query($sql);
         }
     }
+
+    function listarCategorias(){
+        
+        //Enviamos la consulta y obtenemos el resultado
+        $query = $this->db->prepare( 'SELECT * FROM criadero '); 
+        $query->execute();
+
+        //Obtengo todos los datos de la consulta
+        $criaderos = $query->fetchAll(PDO::FETCH_OBJ);
+
+        return $criaderos;
+
+    }
+
+    function listarCategoriasById($req) {
+        $id = $req->params->id;        
+
+        //Enviamos la consulta y obtenemos el resultado
+        $query = $this->db->prepare( 'SELECT * FROM criadero WHERE id_criadero=?'); 
+        $query->execute([$id]);
+
+        //Obtengo todos los datos de la consulta
+        $criaderos = $query->fetch(PDO::FETCH_OBJ);
+
+        return $criaderos;
+
+    }
 }
 ?>
