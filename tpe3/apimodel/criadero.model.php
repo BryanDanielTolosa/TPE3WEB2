@@ -66,5 +66,19 @@ class CriaderoModel{
         return $criaderos;
 
     }
+    function agregarCriadero($data){
+        
+        $query = $this->db->prepare('INSERT INTO criadero (Nombre, Direccion, Localidad, Raza, Imagen) VALUES (?,?,?,?,?)');
+        
+        $query->execute([
+            $data->Nombre,
+            $data->Direccion,
+            $data->Localidad,
+            $data->Raza,
+            $data->Imagen
+        ]);    
+
+        return $this->db->lastInsertId();
+    }
 }
 ?>

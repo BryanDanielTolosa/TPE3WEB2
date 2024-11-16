@@ -45,6 +45,18 @@ class CriaderoController {
             $this->view->response(["message" => "Criadero no encontrado"], 404);
         }
     }
+    function agregarCriadero(){
+        
+        $data = $this->getData();
+         //validacion de datos
+        if(isset($data->Nombre) && isset($data->Direccion) && isset($data->Localidad) && isset($data->Raza) && isset($data->Imagen)){
+            $newId = $this->model->agregarCriadero($data);
+            $this->view->response(["message" => "Criadero creado con éxito", "id" => $newId], 201);
+        } else {
+            $this->view->response(["message" => "Datos incompletos"], 400);
+        }
+    }
+
 }
 
 ?>
