@@ -7,9 +7,5 @@
 
     RewriteRule \.(?:css|js|jpe?g|gif|png)$ - [L]
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-<<<<<<< HEAD
     RewriteRule ^api/(.*)$ router-api.php?resource=$1 [QSA,L]
-=======
-    RewriteRule ^api/(.*)$ router.php?resource=$1 [QSA,L]
->>>>>>> b2a69ab3471045fe5c0857750c5be6326489fc02
 </IfModule>

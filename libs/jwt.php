@@ -20,11 +20,7 @@
         $jwt = $header . "." . $payload . "." . $signature;
         return $jwt;
     }
-<<<<<<< HEAD
 /*
-=======
-
->>>>>>> b2a69ab3471045fe5c0857750c5be6326489fc02
     function validateJWT($jwt) {
         $jwt = explode('.', $jwt);
         if(count($jwt) != 3) {
