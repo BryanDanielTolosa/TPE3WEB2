@@ -16,19 +16,19 @@ class CriaderoController {
 
     //Constructor de la clase
     function __construct() {
-    //Inicializamos los atributos de la clase
-    $this->model = new CriaderoModel();
-    $this->view = new ApiView();
-    $this->perroModel = new PerroModel();
-    $this->data = file_get_contents("php://input");
+        //Inicializamos los atributos de la clase
+        $this->model = new CriaderoModel();
+        $this->view = new ApiView();
+        $this->perroModel = new PerroModel();
+        $this->data = file_get_contents("php://input");
     }
 
     function getData(){
         return json_decode($this->data);
     }
 
-    function listarCategorias($orderBy = 'Raza', $order = 'asc'){
-        $criaderos= $this->model->listarCategorias($orderBy, $order);
+    function listarCategorias($req){
+        $criaderos= $this->model->listarCategorias($req);
         if ($criaderos) {
             $this->view->response($criaderos, 200);
         } else {

@@ -40,11 +40,54 @@ class CriaderoModel{
         }
     }
 
-    function listarCategorias(){
+    function listarCategorias($req){
         
-        //Enviamos la consulta y obtenemos el resultado
-        $query = $this->db->prepare( 'SELECT * FROM criadero '); 
-        $query->execute();
+        $order_by = isset($req->query->order_by) ? $req->query->order_by : NULL;
+        $order =  isset($req->query->order) ? $req->query->order : NULL;
+        $localidad =  isset($req->query->localidad) ? $req->query->localidad : NULL;
+        $raza =  isset($req->query->raza) ? $req->query->raza : NULL;
+
+        // Concatenamos la Query SQL y el Execute según corresponda
+        $querySQL = 'SELECT * FROM `criadero`';
+        $execute = array();
+
+        // Filtros opcionales de Localidad y/o Raza
+        if (isset($localidad) && isset($raza)) {
+            $querySQL.=' WHERE  `Localidad` = ?';
+            array_push($execute, $localidad);
+            $querySQL.=' AND  `Raza` = ?';
+            array_push($execute, $raza);
+        } else {
+            if (isset($localidad)) {
+                $querySQL.=' WHERE  `Localidad` = ?';
+                array_push($execute, $localidad);
+            }
+            if (isset($raza)) {
+                $querySQL.=' WHERE  `Raza` = ?';
+                array_push($execute, $raza);
+            }
+        }
+
+        // Orden opcionar por Nombre o Direccion, Ascendente o Descendente
+        if (isset($order_by)) {
+            if ($order_by === 'Nombre') {
+                $querySQL.=' ORDER BY `Nombre`';
+            } else if ($order_by === 'Direccion') {
+                $querySQL.=' ORDER BY `Direccion`';
+            }
+
+            if (isset($order) && $order === 'DESC') {
+                $querySQL.=' DESC';
+            } else {
+                $querySQL.=' ASC';
+            }
+        }
+        
+        $querySQL.=';';
+        
+        // Ejecutamos la Query SQL y el execute resultante
+        $query = $this->db->prepare( $querySQL );
+        $query->execute($execute);
 
         //Obtengo todos los datos de la consulta
         $criaderos = $query->fetchAll(PDO::FETCH_OBJ);
