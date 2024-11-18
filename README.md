@@ -64,6 +64,12 @@ Añade los parámetros de consulta para ordenar los resultados.
 - **Key**: `order`
 - **Value**: `asc`
 
+#### Ordenar por Nombre Descendente
+- **Key**: `orderBy`
+- **Value**: `nombre`
+- **Key**: `order`
+- **Value**: `desc`
+
 ```plaintext
 GET http://localhost/TPE3WEB2-main/api/perro?orderBy=nombre&order=asc
 
