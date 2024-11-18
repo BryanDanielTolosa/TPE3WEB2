@@ -47,5 +47,27 @@ Con este endpoint, usando el metodo GET, trae el perro con el id 22
 http://localhost/TPE3WEB2/api/perro/22
 Con este endpoint, usando el metodo DELETE, elimina el perro con el id 22
 
-Ordenado se hace con [nombre] asc
-http://localhost/TPE3WEB2-main/api/perro?orderBy=nombre&order=asc
+## Buscar y Ordenar Perros en Postman
+
+Para buscar y ordenar la lista de perros utilizando la API, puedes seguir los siguientes pasos en Postman:
+
+### 1. Configurar la Solicitud GET
+- **Método**: GET
+- **URL**: `http://localhost/TPE3WEB2-main/api/perro/`
+
+### 2. Añadir Parámetros de Consulta
+Añade los parámetros de consulta para ordenar los resultados.
+
+#### Ordenar por Nombre Ascendente
+- **Key**: `orderBy`
+- **Value**: `nombre`
+- **Key**: `order`
+- **Value**: `asc`
+
+```plaintext
+GET http://localhost/TPE3WEB2-main/api/perro?orderBy=nombre&order=asc
+
+GET http://localhost/TPE3WEB2-main/api/perros?orderBy=nombre&order=desc
+
+
+
