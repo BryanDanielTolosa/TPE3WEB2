@@ -24,6 +24,8 @@ Con este endpoint, usando el metodo DELETE, elimina el criadero con el id 22
 
 Tenemos el filtro: esta echo por raza y localidad
 
+http://localhost/TPE3WEB2/api/criadero?order_by=Nombre&localidad=Tandil&raza=Dalmata
+
 ----------------------------------------------- PERRO ---------------------------------------------------
 
 http://localhost/TPE3WEB2/api/perro
