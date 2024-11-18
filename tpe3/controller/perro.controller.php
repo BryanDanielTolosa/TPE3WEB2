@@ -16,21 +16,34 @@ class PerroController {
     function getData(){
         return json_decode($this->data);
     }
-    /**
-     * GET /perros - Lista todos los perros con opción de ordenar por un campo.
-     * @param string $orderBy Campo para ordenar (por defecto 'nombre').
-     * @param string $order Orden 'asc' o 'desc' (por defecto 'asc').
-     */
+
     public function getAll($orderBy = 'nombre', $order = 'asc') {
-        
-        $perros = $this->model->getAllPerros($orderBy, $order);
-        if ($perros) {
-            $this->view->response($perros, 200);
-        } else {
-            $this->view->response(["message" => "No se encontraron perros"], 404);
+    // Validar el campo de ordenación
+    $allowedFields = ['nombre', 'nacimiento', 'padre', 'madre', 'sexo', 'id_criadero_fk', 'imagen'];
+    if (!in_array($orderBy, $allowedFields)) {
+        $orderBy = 'nombre'; // Campo por defecto
+    }
+
+    // Validar la dirección de orden
+    if (!is_string($order)) {
+        $order = 'asc';
+    } else {
+        $order = strtolower($order);
+        if ($order !== 'asc' && $order !== 'desc') {
+            $order = 'asc';
         }
     }
 
+    // Obtener los perros ordenados
+    $perros = $this->model->getAllPerros($orderBy, $order);
+    if ($perros) {
+        $this->view->response($perros, 200);
+    } else {
+        $this->view->response(["message" => "No se encontraron perros"], 404);
+    }
+}
+
+    
     /**
      * GET /perros/{id} - Obtiene un perro específico por ID.
      * @param int $id ID del perro.
