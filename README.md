@@ -1,82 +1,103 @@
 # TPE3WEB2
 
-Ejemplos de endpoints y como usarlos:
------------------------------------------------ CRIADERO ---------------------------------------------------
-http://localhost/TPE3WEB2/api/criadero
+API para la gestión de criaderos y perros, que incluye operaciones CRUD y funcionalidad de filtrado y ordenamiento. A continuación, se describen los principales endpoints y cómo utilizarlos.
 
-Con este endpoint, usando el metodo GET, trae todos los criaderos
+---
 
-http://localhost/TPE3WEB2/api/criadero
+## Tabla de Contenidos
+- [Introducción](#introducción)
+- [Endpoints de Criadero](#endpoints-de-criadero)
+- [Endpoints de Perro](#endpoints-de-perro)
+- [Filtrado y Ordenamiento](#filtrado-y-ordenamiento)
+  - [Filtrar Criaderos](#filtrar-criaderos)
+  - [Ordenar Perros](#ordenar-perros)
+- [Uso en Postman](#uso-en-postman)
+- [Contribución](#contribución)
+- [Licencia](#licencia)
 
-Con este endpoint, usando el metodo POST, crea un criadero
+---
 
-http://localhost/TPE3WEB2/api/criadero/22
+## Introducción
 
-Con este endpoint, usando el metodo PUT, edita el criadero con el id 22
+Esta API permite interactuar con una base de datos de criaderos y perros mediante endpoints RESTful. Proporciona operaciones de creación, lectura, actualización y eliminación (CRUD), así como opciones avanzadas de filtrado y ordenamiento para facilitar las consultas.
 
-http://localhost/TPE3WEB2/api/criadero/22
+---
 
-Con este endpoint, usando el metodo GET, trae el criadero con el id 22
+## Endpoints de Criadero
 
-http://localhost/TPE3WEB2/api/criadero/22
+### Operaciones CRUD para Criaderos
 
-Con este endpoint, usando el metodo DELETE, elimina el criadero con el id 22
+- **GET** `http://localhost/TPE3WEB2/api/criadero`  
+  Obtiene una lista de todos los criaderos.
 
-Tenemos el filtro: esta echo por raza y localidad, este por ejemplo
+- **POST** `http://localhost/TPE3WEB2/api/criadero`  
+  Crea un nuevo criadero.
 
-http://localhost/TPE3WEB2/api/criadero?order_by=Nombre&localidad=Tandil&raza=Dalmata
-esta no existe 
-http://localhost/TPE3WEB2-main/api/criadero?order_by=Nombre&localidad=Tandil&raza=Boyero de Berna
-esta si nos las devuelve por que existe
+- **PUT** `http://localhost/TPE3WEB2/api/criadero/{id}`  
+  Actualiza los datos del criadero con el ID especificado.
 
------------------------------------------------ PERRO ---------------------------------------------------
+- **GET** `http://localhost/TPE3WEB2/api/criadero/{id}`  
+  Obtiene los detalles del criadero con el ID especificado.
 
-http://localhost/TPE3WEB2/api/perro
+- **DELETE** `http://localhost/TPE3WEB2/api/criadero/{id}`  
+  Elimina el criadero con el ID especificado.
 
-Con este endpoint, usando el metodo GET, trae todos los perros
+### Filtrar Criaderos
 
-http://localhost/TPE3WEB2/api/perro
+Puedes filtrar criaderos utilizando parámetros como **localidad** y **raza**. Ejemplo:
 
-Con este endpoint, usando el metodo POST, crea un perro
+- **Ejemplo válido**  
+  `http://localhost/TPE3WEB2/api/criadero?order_by=Nombre&localidad=Tandil&raza=Dalmata`
 
-http://localhost/TPE3WEB2/api/perro/22
+- **Ejemplo inválido (sin resultados)**  
+  `http://localhost/TPE3WEB2/api/criadero?order_by=Nombre&localidad=Tandil&raza=Boyero de Berna`
 
-Con este endpoint, usando el metodo PUT, edita el perro con el id 22
+---
 
-http://localhost/TPE3WEB2/api/perro/22
+## Endpoints de Perro
 
-Con este endpoint, usando el metodo GET, trae el perro con el id 22
+### Operaciones CRUD para Perros
 
-http://localhost/TPE3WEB2/api/perro/22
-Con este endpoint, usando el metodo DELETE, elimina el perro con el id 22
+- **GET** `http://localhost/TPE3WEB2/api/perro`  
+  Obtiene una lista de todos los perros.
 
-## Buscar y Ordenar Perros en Postman
+- **POST** `http://localhost/TPE3WEB2/api/perro`  
+  Crea un nuevo perro.
 
-Para buscar y ordenar la lista de perros utilizando la API, puedes seguir los siguientes pasos en Postman:
+- **PUT** `http://localhost/TPE3WEB2/api/perro/{id}`  
+  Actualiza los datos del perro con el ID especificado.
 
-### 1. Configurar la Solicitud GET
-- **Método**: GET
-- **URL**: `http://localhost/TPE3WEB2-main/api/perro/`
+- **GET** `http://localhost/TPE3WEB2/api/perro/{id}`  
+  Obtiene los detalles del perro con el ID especificado.
 
-### 2. Añadir Parámetros de Consulta
-Añade los parámetros de consulta para ordenar los resultados.
+- **DELETE** `http://localhost/TPE3WEB2/api/perro/{id}`  
+  Elimina el perro con el ID especificado.
 
-#### Ordenar por Nombre Ascendente
-- **Key**: `orderBy`
-- **Value**: `nombre`
-- **Key**: `order`
-- **Value**: `asc`
+### Ordenar Perros
 
-#### Ordenar por Nombre Descendente
-- **Key**: `orderBy`
-- **Value**: `nombre`
-- **Key**: `order`
-- **Value**: `desc`
+Puedes ordenar perros utilizando parámetros de consulta para organizar los resultados por nombre. Los parámetros disponibles son:
+
+- **`orderBy`**: Campo por el cual ordenar (actualmente solo `nombre`).
+- **`order`**: Tipo de orden (`asc` para ascendente, `desc` para descendente).
+
+#### Ejemplos:
+
+- **Orden Ascendente por Nombre**  
+  `http://localhost/TPE3WEB2/api/perro?orderBy=nombre&order=asc`
+
+- **Orden Descendente por Nombre**  
+  `http://localhost/TPE3WEB2/api/perro?orderBy=nombre&order=desc`
+
+---
+
+## Filtrado y Ordenamiento
+
+### Filtrar Criaderos
+
+Puedes filtrar criaderos utilizando parámetros como **localidad** y **raza**. Ejemplo:
 
 ```plaintext
-GET http://localhost/TPE3WEB2-main/api/perro?orderBy=nombre&order=asc
-
-GET http://localhost/TPE3WEB2-main/api/perros?orderBy=nombre&order=desc
-
+GET http://localhost/TPE3WEB2/api/criadero?order_by=Nombre&localidad=Tandil&raza=Dalmata
+GET http://localhost/TPE3WEB2-main/api/criadero?order_by=Nombre&localidad=Tandil&raza=Boyero de Berna
 
 
