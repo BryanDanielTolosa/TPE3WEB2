@@ -42,14 +42,13 @@ class PerroModel {
     }
 
     // Obtiene todos los perros, con opción de ordenar por cualquier campo
-    public function getAllPerros() {
-        //perros?orderby=asc contateno selec from
 
-        $query = $this->db->prepare("SELECT * FROM perro ");
-        $query->execute();
-        return $query->fetchAll(PDO::FETCH_OBJ);
-    }
-
+        public function getAllPerros($orderBy, $order) {
+            $query = $this->db->prepare("SELECT * FROM perro ORDER BY $orderBy $order");
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_OBJ);
+        }
+    
     // Obtiene un perro específico por ID
     public function getPerroById($req) {
         $id = $req->params->id;
