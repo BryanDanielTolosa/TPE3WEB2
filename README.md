@@ -12,8 +12,6 @@ API para la gestión de criaderos y perros, que incluye operaciones CRUD y funci
   - [Filtrar Criaderos](#filtrar-criaderos)
   - [Ordenar Perros](#ordenar-perros)
 - [Uso en Postman](#uso-en-postman)
-- [Contribución](#contribución)
-- [Licencia](#licencia)
 
 ---
 
