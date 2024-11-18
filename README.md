@@ -22,9 +22,12 @@ http://localhost/TPE3WEB2/api/criadero/22
 
 Con este endpoint, usando el metodo DELETE, elimina el criadero con el id 22
 
-Tenemos el filtro: esta echo por raza y localidad
+Tenemos el filtro: esta echo por raza y localidad, este por ejemplo
 
 http://localhost/TPE3WEB2/api/criadero?order_by=Nombre&localidad=Tandil&raza=Dalmata
+esta no existe 
+http://localhost/TPE3WEB2-main/api/criadero?order_by=Nombre&localidad=Tandil&raza=Boyero de Berna
+esta si nos las devuelve por que existe
 
 ----------------------------------------------- PERRO ---------------------------------------------------
 
